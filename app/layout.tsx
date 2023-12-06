@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
+import { Provider } from "react-redux";
+import { store } from "../components/state/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +24,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className={inter.className}>
           <NextTopLoader />
           {/* adding our custom created context here ,for adding and creating  the element in the build page ,to use in both preview and builder page */}
-          <DesignerContextProvider>
+          <Provider store={store}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               {children}
               <Toaster />
             </ThemeProvider>
-          </DesignerContextProvider>
+          </Provider>
         </body>
       </html>
     </ClerkProvider>

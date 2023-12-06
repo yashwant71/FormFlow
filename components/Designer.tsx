@@ -9,11 +9,17 @@ import { ElementsType, FormElementInstance, FormElements } from "./FormElements"
 import { idGenerator } from "@/lib/idGenerator";
 import { Button } from "./ui/button";
 import { BiSolidTrash } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./state/store";
+import { addElement } from "./state/reducer/designerSlice";
 
 // on builder page , designer includes sidebar and dropzone
 function Designer() {
-  const { elements, addElement, selectedElement, setSelectedElement, removeElement } = useDesigner();
 
+  // const { elements, addElement, selectedElement, setSelectedElement, removeElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
+  const elements = useSelector((state: RootState) => state.designer.elements);
+  
   const droppable = useDroppable({
     id: "designer-drop-area",
     data: {
@@ -39,11 +45,13 @@ function Designer() {
       if (droppingSidebarBtnOverDesignerDropArea) {
         const type = active.data?.current?.type;
         const newElement = FormElements[type as ElementsType].construct(idGenerator());
-
-        addElement(elements.length, newElement);
+        console.log(elements.length)
+        var elementsLen = elements.length
+        
+        dispatch(addElement({ index: elementsLen, element: newElement }));
+        // addElement(elements.length, newElement);
         return;
       }
-
       // ------------------------------
       const isDroppingOverDesignerElementTopHalf = over.data?.current?.isTopHalfDesignerElement;
 
