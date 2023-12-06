@@ -9,10 +9,13 @@ import { ElementsType, FormElementInstance, FormElements } from "./FormElements"
 import { idGenerator } from "@/lib/idGenerator";
 import { Button } from "./ui/button";
 import { BiSolidTrash } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { actionCreators } from "./redux";
 
 // on builder page , designer includes sidebar and dropzone
 function Designer() {
   const { elements, addElement, selectedElement, setSelectedElement, removeElement } = useDesigner();
+  const dispatch = useDispatch();
 
   const droppable = useDroppable({
     id: "designer-drop-area",
@@ -39,7 +42,8 @@ function Designer() {
       if (droppingSidebarBtnOverDesignerDropArea) {
         const type = active.data?.current?.type;
         const newElement = FormElements[type as ElementsType].construct(idGenerator());
-
+        
+        dispatch(actionCreators.addElement(elements.length, newElement));
         addElement(elements.length, newElement);
         return;
       }
