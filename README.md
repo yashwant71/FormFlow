@@ -1,24 +1,17 @@
 
-We are going to build this with:
-- Dnd-kit library
-- Typescript
-- Tailwindcss / Shadcn UI
-- Vercel PostgreSQL
-- Prisma as ORM
 
-Features: 
-- Responsive
-- Create forms with a stunning drag and drop designer
+# Features: 
+- Create forms with a stunning drag and drop designer !
 - Layout fields: Title, SubTitle, Spacer, Separator, Paragraph
 - Form fields: Text, Number, Select, Date, Checkbox, Textarea
-- Is easy to add and customize new fields
+- Is easy to add and customize new fields 
 - Form preview dialog
 - Share form url
 - Form submission/validation
 - Form stats: visits and submissions
+- Responsive
 
-
-technology stack we used:
+# technology stack we used:
 - Nextjs 13  with AppRouter
 - shadcn.ui : Built with Radix UI and Tailwind CSS, Shadcn UI is all about accessibility, customizability, and an enhanced developer experience.
     - radix ui : for ui components 
@@ -35,21 +28,17 @@ misc tech:
 - next-themes : for dark mode
 
 
-misc links for libary docs:
+# misc links for libary docs:
 - https://ui.shadcn.com/themes
 - https://clerk.com/docs/quickstarts/nextjs#require-authentication-to-access-your-app
 - https://heropatterns.com/
 - https://react.dev/reference/react
 
-misc commands:
+# misc commands:
 - npx prisma migrate dev // to setup using vercel storage service via .env it started init_db ,whenever we change schema.prisma ,need to migrate it too
 - npx prisma studio // TO RUN DB viewer
 - 
-
-
-
-
-todo:
+# todo:
 
 fix issue :
 - when we drag the designer/drop_zone element and drop below the same , the hover div is not getting hidden , also its not moving it to bottom also
