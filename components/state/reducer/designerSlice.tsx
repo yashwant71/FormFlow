@@ -37,6 +37,9 @@ const designerSlice = createSlice({
     setSelectedElement: (state, action: PayloadAction<FormElementInstance | null>) => {
       state.selectedElement = action.payload;
     },
+    setElements: (state, action: PayloadAction<FormElementInstance[]>) => {
+      state.elements = action.payload;
+    },
   },
 //   extraReducers: (builder) => {
 //     builder
@@ -51,6 +54,7 @@ export const {
   removeElement,
   updateElement,
   setSelectedElement,
+  setElements,
 } = designerSlice.actions;
 
 // export const selectDesigner = (state: RootState) => state.designer;

@@ -2,9 +2,12 @@ import React from "react";
 import useDesigner from "./hooks/useDesigner";
 import FormElementsSidebar from "./FormElementsSidebar";
 import PropertiesFormSidebar from "./PropertiesFormSidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/store";
 
 function DesignerSidebar() {
-  const { selectedElement } = useDesigner();
+  // const { selectedElement } = useDesigner();
+  const selectedElement = useSelector((state: RootState) => state.designer.selectedElement);
   return (
     <aside className="w-[400px] max-w-[400px] flex flex-col flex-grow gap-2 border-l-2 border-muted p-4 bg-background overflow-y-auto h-full">
       {!selectedElement && <FormElementsSidebar />}

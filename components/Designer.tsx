@@ -4,21 +4,23 @@ import React, { useState } from "react";
 import DesignerSidebar from "./DesignerSidebar";
 import { DragEndEvent, useDndMonitor, useDraggable, useDroppable } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
-import useDesigner from "./hooks/useDesigner";
+// import useDesigner from "./hooks/useDesigner";
 import { ElementsType, FormElementInstance, FormElements } from "./FormElements";
 import { idGenerator } from "@/lib/idGenerator";
 import { Button } from "./ui/button";
 import { BiSolidTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./state/store";
-import { addElement } from "./state/reducer/designerSlice";
+import { addElement, removeElement, setSelectedElement } from "./state/reducer/designerSlice";
 
 // on builder page , designer includes sidebar and dropzone
 function Designer() {
 
   // const { elements, addElement, selectedElement, setSelectedElement, removeElement } = useDesigner();
+
   const dispatch = useDispatch<AppDispatch>();
   const elements = useSelector((state: RootState) => state.designer.elements);
+  const selectedElement = useSelector((state: RootState) => state.designer.selectedElement);
   
   const droppable = useDroppable({
     id: "designer-drop-area",
@@ -79,8 +81,8 @@ function Designer() {
         if (isDroppingOverDesignerElementBottomHalf) {
           indexForNewElement = overElementIndex + 1;
         }
-
-        addElement(indexForNewElement, newElement);
+        dispatch(addElement({ index: indexForNewElement, element: newElement }));
+        // addElement(indexForNewElement, newElement);
         return;
       }
 
@@ -104,14 +106,14 @@ function Designer() {
         }
 
         const activeElement = { ...elements[activeElementIndex] };
-        removeElement(activeId);
+        dispatch(removeElement(activeId));
 
         let indexForNewElement = overElementIndex; 
         if (isDroppingOverDesignerElementBottomHalf) {
           indexForNewElement = overElementIndex + 1;
         }
-
-        addElement(indexForNewElement, activeElement);
+        dispatch(addElement({ index: indexForNewElement, element: activeElement }));
+        // addElement(indexForNewElement, activeElement);
       }
     },
   });
@@ -122,7 +124,7 @@ function Designer() {
       <div
         className="p-4 w-full"
         onClick={() => {
-          if (selectedElement) setSelectedElement(null);
+          if (selectedElement) dispatch(setSelectedElement(null));
         }}
       >
         <div
@@ -160,8 +162,9 @@ function Designer() {
 
 // element shown in designer/dropHere ,builder page
 function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
-  const { removeElement, selectedElement, setSelectedElement } = useDesigner();
-
+  // const { removeElement, selectedElement, setSelectedElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
+  
   const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
   const topHalf = useDroppable({
     id: element.id + "-top", // giving different ids for each element top ,so it wont confuse with other drop part like bottom etc . 
@@ -208,7 +211,7 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        setSelectedElement(element);
+        dispatch(setSelectedElement(element));
       }}
     >
       {/* added a hidden top part in element ,which we can use to find where to drop the element */}
@@ -222,7 +225,7 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
               variant={"outline"}
               onClick={(e) => {
                 e.stopPropagation(); // avoid selection of element while deleting
-                removeElement(element.id);
+                dispatch(removeElement(element.id));
               }}
             >
               <BiSolidTrash className="h-6 w-6" />  

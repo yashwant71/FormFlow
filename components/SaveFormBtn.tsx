@@ -1,13 +1,18 @@
 import React, { useTransition } from "react";
 import { Button } from "./ui/button";
 import { HiSaveAs } from "react-icons/hi";
-import useDesigner from "./hooks/useDesigner";
+// import useDesigner from "./hooks/useDesigner";
 import { UpdateFormContent } from "@/actions/form";
 import { toast } from "./ui/use-toast";
 import { FaSpinner } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/store";
 
 function SaveFormBtn({ id }: { id: number }) {
-  const { elements } = useDesigner();
+  // const { elements } = useDesigner();
+
+  const elements = useSelector((state: RootState) => state.designer.elements);
+  
   const [loading, startTransition] = useTransition();
 
   const updateFormContent = async () => {

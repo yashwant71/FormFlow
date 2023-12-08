@@ -5,12 +5,15 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ElementsType, FormElement, FormElementInstance } from "../FormElements";
-import useDesigner from "../hooks/useDesigner";
+// import useDesigner from "../hooks/useDesigner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 import { LuHeading2 } from "react-icons/lu";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../state/store";
+import { updateElement } from "../state/reducer/designerSlice";
 
 const type: ElementsType = "SubTitleField";
 
@@ -66,7 +69,8 @@ type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { updateElement } = useDesigner();
+  // const { updateElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
   const form = useForm<propertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",
@@ -81,12 +85,12 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
 
   function applyChanges(values: propertiesFormSchemaType) {
     const { title } = values;
-    updateElement(element.id, {
+    dispatch(updateElement({id: element.id, element: {
       ...element,
       extraAttributes: {
         title,
       },
-    });
+    }}));
   }
 
   return (

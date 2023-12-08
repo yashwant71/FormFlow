@@ -7,10 +7,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import useDesigner from "../hooks/useDesigner";
+// import useDesigner from "../hooks/useDesigner";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { LuHeading1 } from "react-icons/lu";
+import { AppDispatch } from "../state/store";
+import { useDispatch } from "react-redux";
+import { updateElement } from "../state/reducer/designerSlice";
 
 const type: ElementsType = "TitleField";
 
@@ -66,7 +69,8 @@ type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { updateElement } = useDesigner();
+  // const { updateElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
   const form = useForm<propertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",
@@ -81,12 +85,12 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
 
   function applyChanges(values: propertiesFormSchemaType) {
     const { title } = values;
-    updateElement(element.id, {
+    dispatch(updateElement({id: element.id, element: {
       ...element,
       extraAttributes: {
         title,
       },
-    });
+    }}));
   }
 
   return (

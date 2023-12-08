@@ -16,11 +16,16 @@ import {
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
-import useDesigner from "./hooks/useDesigner";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/store";
+// import useDesigner from "./hooks/useDesigner";
 
 // when we click publish 
 function PublishFormBtn({ id }: { id: number }) {
-  const { elements } = useDesigner();
+  // const { elements } = useDesigner();
+
+  const elements = useSelector((state: RootState) => state.designer.elements);
+  
   const [loading, startTransition] = useTransition();
   const router = useRouter();
 

@@ -8,11 +8,14 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import useDesigner from "../hooks/useDesigner";
+// import useDesigner from "../hooks/useDesigner";
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+import { AppDispatch } from "../state/store";
+import { useDispatch } from "react-redux";
+import { updateElement } from "../state/reducer/designerSlice";
 
 const type: ElementsType = "TextField";
 
@@ -127,7 +130,8 @@ type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 // from the side-bar element details update 
 function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { updateElement } = useDesigner();
+  // const { updateElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
   const form = useForm<propertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur", // so we dont need to click submit etc to save
@@ -145,7 +149,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
 
   function applyChanges(values: propertiesFormSchemaType) {
     const { label, helperText, placeHolder, required } = values;
-    updateElement(element.id, {
+    dispatch(updateElement({id: element.id, element: {
       ...element,
       extraAttributes: {
         label,
@@ -153,7 +157,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
         placeHolder,
         required,
       },
-    });
+    }}));
   }
 
   return (

@@ -8,7 +8,7 @@ import SaveFormBtn from "./SaveFormBtn";
 import Designer from "./Designer";
 import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import DragOverlayWrapper from "./DragOverlayWrapper";
-import useDesigner from "./hooks/useDesigner";
+// import useDesigner from "./hooks/useDesigner";
 import { ImSpinner2 } from "react-icons/im";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -16,10 +16,13 @@ import { toast } from "./ui/use-toast";
 import Link from "next/link";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Confetti from "react-confetti";
+import { setElements, setSelectedElement } from "./state/reducer/designerSlice";
 
 // builder route content 
 function FormBuilder({ form }: { form: Form }) {
-  const { setElements, setSelectedElement } = useDesigner();
+  // const { setElements, setSelectedElement } = useDesigner();
+
+
   const [isReady, setIsReady] = useState(false);
 
   // adding sensors so it can differentiate between drag and click 

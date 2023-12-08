@@ -3,10 +3,15 @@ import React, { useState } from "react";
 import { SidebarBtnElementDragOverlay } from "./SidebarBtnElement";
 import { ElementsType, FormElements } from "./FormElements";
 import useDesigner from "./hooks/useDesigner";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/store";
 
 // this is the moving element when dragging for siderbar and drop_zone element 
 function DragOverlayWrapper() {
-  const { elements } = useDesigner();
+  // const { elements } = useDesigner();
+
+  const elements = useSelector((state: RootState) => state.designer.elements);
+  
   const [draggedItem, setDraggedItem] = useState<Active | null>(null);
 
   useDndMonitor({

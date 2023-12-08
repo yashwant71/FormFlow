@@ -1,12 +1,16 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { MdPreview } from "react-icons/md";
-import useDesigner from "./hooks/useDesigner";
+// import useDesigner from "./hooks/useDesigner";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { FormElements } from "./FormElements";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/store";
 
 function PreviewDialogBtn() {
-  const { elements } = useDesigner();
+  // const { elements } = useDesigner();
+
+  const elements = useSelector((state: RootState) => state.designer.elements);
 
   return (
     <Dialog>

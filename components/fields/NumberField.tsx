@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ElementsType, FormElement, FormElementInstance, SubmitFunction } from "../FormElements";
-import useDesigner from "../hooks/useDesigner";
+// import useDesigner from "../hooks/useDesigner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
@@ -13,6 +13,9 @@ import { cn } from "@/lib/utils";
 import { Bs123 } from "react-icons/bs";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Switch } from "../ui/switch";
+import { updateElement } from "../state/reducer/designerSlice";
+import { AppDispatch } from "../state/store";
+import { useDispatch } from "react-redux";
 
 const type: ElementsType = "NumberField";
 
@@ -123,7 +126,9 @@ function FormComponent({
 type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
   const element = elementInstance as CustomInstance;
-  const { updateElement } = useDesigner();
+  // const { updateElement } = useDesigner();
+  const dispatch = useDispatch<AppDispatch>();
+
   const form = useForm<propertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
     mode: "onBlur",
@@ -141,7 +146,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
 
   function applyChanges(values: propertiesFormSchemaType) {
     const { label, helperText, placeHolder, required } = values;
-    updateElement(element.id, {
+    dispatch(updateElement({id: element.id, element: {
       ...element,
       extraAttributes: {
         label,
@@ -149,7 +154,7 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
         placeHolder,
         required,
       },
-    });
+    }}));
   }
 
   return (
